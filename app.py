@@ -1,8 +1,29 @@
 import streamlit as st
 import pandas as pd
+from googletrans import Translator
 
 # --- Tradução dinâmica, apenas para textos fixos ---
 
+TRANSLATIONS = {
+    "en": {
+        "title": "DataSolutions Pro",
+        "opportunities": "Market Opportunities by Sector",
+        "simulator": "ROI Simulator",
+        "employees": "Employees",
+        # ... (adicione todos textos fixos aqui)
+    },
+    "pt": {
+        "title": "DataSolutions Pro",
+        "opportunities": "Oportunidades de Mercado por Setor",
+        "simulator": "Simulador de ROI",
+        "employees": "Funcionários",
+        # ... idem em pt-BR
+    }
+}
+
+def t(key, lang):
+    return TRANSLATIONS[lang].get(key, key)
+ 
 
 # --- Carregamento dos dados dos CSVs ---
 csv_path = "static/"
