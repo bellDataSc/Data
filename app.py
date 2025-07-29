@@ -1,21 +1,72 @@
 import streamlit as st
 import pandas as pd
 
-
-# --- Tradução dinâmica, apenas para textos fixos ---
-
- 
-
-# --- Carregamento dos dados dos CSVs ---
-csv_path = "static/"
-data = {
-    "oportunidades": pd.read_csv(csv_path + "oportunidades_por_setor.csv"),
-    "saas": pd.read_csv(csv_path + "mercado_saas_brasil.csv"),
-    "meddic": pd.read_csv(csv_path + "funil_vendas_meddic.csv"),
-    "roi_auto": pd.read_csv(csv_path + "roi_por_automacao.csv"),
+# --------- Traduções estáticas ----------
+TRANSLATIONS = {
+    "Professional Data Insights for Business": {
+        "en": "Professional Data Insights for Business",
+        "pt": "Inteligência de Dados Profissional para Negócios"
+    },
+    "Market Opportunities by Sector": {
+        "en": "Market Opportunities by Sector",
+        "pt": "Oportunidades de Mercado por Setor"
+    },
+    "ROI Simulator": {
+        "en": "ROI Simulator",
+        "pt": "Simulador de ROI"
+    },
+    "Employees": {
+        "en": "Employees",
+        "pt": "Funcionários"
+    },
+    "Manual Hours / Week per Employee": {
+        "en": "Manual Hours / Week per Employee",
+        "pt": "Horas manuais / semana por funcionário"
+    },
+    "Cost per Hour (BRL)": {
+        "en": "Cost per Hour (BRL)",
+        "pt": "Custo por hora (BRL)"
+    },
+    "Initial Investment (BRL)": {
+        "en": "Initial Investment (BRL)",
+        "pt": "Investimento Inicial (BRL)"
+    },
+    "Calculate": {
+        "en": "Calculate",
+        "pt": "Calcular"
+    },
+    "Annual Saving": {
+        "en": "Annual Saving",
+        "pt": "Economia Anual"
+    },
+    "Payback": {
+        "en": "Payback",
+        "pt": "Payback"
+    },
+    "years": {
+        "en": "years",
+        "pt": "anos"
+    }
 }
 
-# --- Idioma (toggle pelo usuário) ---
+def translate(term, lang):
+    """Retorna a tradução do termo ou o termo original se não houver tradução."""
+    return TRANSLATIONS.get(term, {}).get(lang, term)
+
+# -------- Carregamento dos dados (com tratamento) ----------
+csv_path = "static/"
+try:
+    data = {
+        "oportunidades": pd.read_csv(csv_path + "oportunidades_por_setor.csv"),
+        "saas": pd.read_csv(csv_path + "mercado_saas_brasil.csv"),
+        "meddic": pd.read_csv(csv_path + "funil_vendas_meddic.csv"),
+        "roi_auto": pd.read_csv(csv_path + "roi_por_automacao.csv"),
+    }
+except Exception as e:
+    st.error(f"Erro ao carregar arquivos CSV: {e}")
+    st.stop()
+
+# -------- Interface Streamlit ---------
 st.set_page_config(page_title="DataSolutions Pro")
 lang = st.sidebar.radio("Idioma / Language", ("English (UK)", "Português (BR)"))
 lang = "pt" if lang == "Português (BR)" else "en"
@@ -24,11 +75,11 @@ st.title("DataSolutions Pro")
 
 st.markdown(f"**{translate('Professional Data Insights for Business', lang)}**")
 
-# --- Tabela: Oportunidades por setor ---
+# Tabela
 st.header(translate("Market Opportunities by Sector", lang))
 st.dataframe(data["oportunidades"], use_container_width=True)
 
-# --- Simulador de ROI (manual, como no projeto original) ---
+# Simulador de ROI
 st.header(translate("ROI Simulator", lang))
 
 with st.form("form_simulador"):
