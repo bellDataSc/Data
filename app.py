@@ -2,18 +2,6 @@ import streamlit as st
 import pandas as pd
 
 # --- Tradução dinâmica, apenas para textos fixos ---
-import openai
-
-openai.api_key = st.secrets["OPENAI_API_KEY"]
-
-def openai_translate(text, target_language="Portuguese"):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "user", "content": f"Translate the following to {target_language}: {text}"},
-        ]
-    )
-    return response.choices[0].message["content"].strip()
 
 
 # --- Carregamento dos dados dos CSVs ---
